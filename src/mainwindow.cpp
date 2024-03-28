@@ -133,9 +133,10 @@ void MainWindow::onProcessErrorOccurred(QProcess::ProcessError error)
 void MainWindow::updateIps()
 {
     QString ipAddresses;
-    for(const auto & addr : QNetworkInterface::allAddresses())
+    for(const auto & interface : QNetworkInterface::allInterfaces())
     {
-        ipAddresses.append(QString("<a href=\"http://%1:%2\">%1:%2</a> ").arg(addr.toString()).arg(port));
+        auto entry = interface.addressEntries().at(0);
+        ipAddresses.append(QString("<a href=\"http://%1:%2\">%1:%2</a> ").arg(entry.ip().toString()).arg(port));
     }
     ui->ipContainer->show();
     ui->ips->setText(ipAddresses);
